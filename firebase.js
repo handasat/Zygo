@@ -12,3 +12,5 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const database = firebase.database();
+
+database.ref("test").set("זה עובד!");
