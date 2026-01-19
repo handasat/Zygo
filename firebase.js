@@ -12,3 +12,23 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const database = firebase.database();
+
+const form = document.getElementById("nameForm");
+
+form.addEventListener("submit", function (event) {
+  event.preventDefault(); 
+
+  
+  const firstName = document.getElementById("firstName").value;
+  const lastName = document.getElementById("lastName").value;
+
+  database.ref("users").push({
+    firstName: firstName,
+    lastName: lastName,
+    createdAt: Date.now()
+  });
+
+  form.reset();
+
+  alert("הנתונים נשמרו בהצלחה!");
+});
