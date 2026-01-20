@@ -10,9 +10,10 @@ document.addEventListener("DOMContentLoaded", function () {
     appId: "1:243652763597:web:f9cbc63435193855236e84"
   };
 
-  // ✅ תיקון: אתחול אחד בלבד
+  // אתחול Firebase (פעם אחת בלבד)
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
+    console.log("Firebase initialized");
   }
 
   const database = firebase.database();
@@ -21,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("nameForm");
   console.log("Form loaded:", form);
 
-  // ✅ תיקון: JavaScript תקין
+  // 🔹 שם הקולקשן / path
   const collectionName = "Details";
 
   form.addEventListener("submit", async function (event) {
@@ -44,8 +45,10 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     try {
-      // ✅ תיקון: שימוש במשתנה ולא במחרוזת
+      // 🔹 Realtime Database → Details
       const rtdbRes = await database.ref(collectionName).push(userData);
+
+      // 🔹 Firestore → Details
       const fsRes = await firestore.collection(collectionName).add(userData);
 
       console.log("RTDB saved:", rtdbRes.key);
@@ -55,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
       form.reset();
 
     } catch (err) {
-      console.error("Firebase save failed:", err);
+      console.error("Save failed:", err);
       alert("❌ השמירה נכשלה. בדוק Console (F12)");
     }
   });
