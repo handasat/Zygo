@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<html lang="he">
 <head>
   <meta charset="UTF-8">
   <title>Zygo</title>
-
   <style>
     body {
       font-family: Arial;
       direction: rtl;
       background: #f4f4f4;
     }
+
     .screen {
       display: none;
       background: #fff;
@@ -18,127 +16,768 @@
       margin: 40px auto;
       border-radius: 10px;
     }
-    .screen.active {
-      display: block;
-    }
+    .screen.active { display: block; }
+
     input, select, button {
       width: 100%;
       padding: 10px;
       margin-bottom: 12px;
     }
+
     button {
       background: black;
       color: white;
       border: none;
       cursor: pointer;
     }
+
     .secondary {
       background: #ccc;
       color: black;
     }
 
-    label.checkbox {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* ===== Screen 1 design (כמו אצלך) ===== */
+    /* ===== Screen 1 - Match reference screenshot (scoped) ===== */
     #screen1{
+      max-width: 1100px;
       background: linear-gradient(180deg, #f7efe3, #f4e6d5);
       border-radius: 18px;
       padding: 0;
       overflow: hidden;
     }
-    #screen1 .s1-wrap{ padding:18px; }
+    #screen1 .s1-wrap{
+      padding: 18px 18px 90px;
+    }
+    #screen1 .s1-top{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; margin-bottom: 18px;
+    }
+    #screen1 .s1-pill{
+      border: 2px solid rgba(0,0,0,.10);
+      background: rgba(255,255,255,.35);
+      border-radius: 999px;
+      padding: 10px 14px;
+      display:inline-flex;
+      align-items:center;
+      font-weight: 700;
+      user-select:none;
+    }
+    #screen1 .s1-crumbs{
+      flex: 1;
+      text-align:center;
+      color:#6b7280;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    #screen1 .s1-crumbs b{ color:#111; }
+
+    #screen1 .s1-event{
+      display:flex; gap:16px; align-items:flex-start;
+      padding: 6px 0 18px;
+    }
+    #screen1 .s1-img{
+      width: 92px; height: 92px;
+      border-radius: 18px;
+      object-fit: cover;
+      background:#fff;
+      box-shadow: 0 10px 30px rgba(0,0,0,.10);
+    }
+    #screen1 .s1-title{
+      margin: 6px 0 8px;
+      font-size: 28px;
+      line-height: 1.15;
+      font-weight: 900;
+      letter-spacing: .2px;
+    }
+    #screen1 .s1-meta{
+      display:flex; align-items:center; gap:8px;
+      font-size: 16px;
+      opacity:.85;
+    }
+
+    #screen1 .s1-card{
+      background:#fff;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.10);
+      padding: 18px;
+      border: 1px solid rgba(0,0,0,.06);
+    }
+    #screen1 .s1-card-top{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px; flex-wrap: wrap;
+    }
+    #screen1 .s1-qty{
+      display:flex; align-items:center; gap:18px;
+      background:#f6f2ea;
+      border: 2px solid rgba(0,0,0,.10);
+      border-radius: 999px;
+      padding: 10px 14px;
+      min-width: 170px;
+      justify-content:space-between;
+    }
+    #screen1 .s1-qty .btn{
+      width: 34px; height: 34px;
+      border-radius: 999px;
+      border: 2px solid rgba(0,0,0,.10);
+      background:#fff;
+      display:grid; place-items:center;
+      font-size: 18px;
+      font-weight: 900;
+      user-select:none;
+    }
+    #screen1 .s1-qty .num{
+      font-size: 26px;
+      font-weight: 900;
+    }
+
+    #screen1 .s1-radio{
+      display:flex; gap:10px; align-items:center;
+      background: #f6f2ea;
+      border: 2px solid rgba(0,0,0,.10);
+      border-radius: 999px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+    #screen1 .s1-radio input{
+      width:auto; margin:0;
+      transform: scale(1.1);
+    }
+
+    #screen1 .s1-right{
+      margin-inline-start: auto;
+      text-align: right;
+      min-width: 220px;
+    }
+    #screen1 .s1-ticket-name{
+      font-weight: 900;
+      font-size: 24px;
+      margin: 0 0 6px;
+    }
+    #screen1 .s1-prices{
+      display:flex; gap:10px; align-items:baseline;
+      justify-content:flex-end;
+    }
+    #screen1 .s1-old{
+      color:#6b7280;
+      text-decoration: line-through;
+      font-weight: 800;
+      font-size: 18px;
+    }
+    #screen1 .s1-new{
+      font-weight: 900;
+      font-size: 26px;
+      color:#3f3f46;
+    }
+
+    #screen1 .s1-divider{
+      height: 2px;
+      background: #7c3aed;
+      margin: 14px 0 12px;
+    }
+    #screen1 .s1-bottom{
+      display:flex; align-items:center; justify-content:flex-end;
+      gap:10px;
+      font-size: 14px;
+      opacity:.88;
+    }
+    #screen1 .s1-info{
+      width: 24px; height: 24px;
+      border-radius: 999px;
+      border: 2px solid rgba(0,0,0,.12);
+      display:grid; place-items:center;
+      font-weight: 900;
+      background:#fff;
+    }
+
+    #screen1 .s1-actions{
+      position: fixed;
+      left: 0; right: 0;
+      bottom: 18px;
+      display:flex;
+      justify-content:center;
+      pointer-events:none;
+    }
+    #screen1 .s1-actions button{
+      pointer-events:auto;
+      width: min(1100px, calc(100% - 36px));
+      padding: 16px 18px;
+      border-radius: 999px;
+      background: #2563eb;
+      color:#fff;
+      border:none;
+      cursor:pointer;
+      font-weight: 900;
+      box-shadow: 0 10px 24px rgba(37,99,235,.25);
+      margin-bottom: 0;
+    }
+
+    /* ===== Screen 2 - Match reference screenshot (scoped) ===== */
+    #screen2{
+      max-width: 1100px;
+      background: linear-gradient(180deg, #f7efe3, #f4e6d5);
+      border-radius: 18px;
+      padding: 0;
+      overflow: hidden;
+    }
+    #screen2 .s2-wrap{
+      padding: 18px 18px 90px;
+    }
+    #screen2 .s2-top{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; margin-bottom: 18px;
+    }
+    #screen2 .s2-pill{
+      border: 2px solid rgba(0,0,0,.10);
+      background: rgba(255,255,255,.35);
+      border-radius: 999px;
+      padding: 10px 14px;
+      display:inline-flex;
+      align-items:center;
+      font-weight: 700;
+      user-select:none;
+    }
+    #screen2 .s2-crumbs{
+      flex: 1;
+      text-align:center;
+      color:#6b7280;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    #screen2 .s2-crumbs b{ color:#111; }
+
+    #screen2 .s2-card{
+      background:#fff;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.10);
+      padding: 18px;
+      border: 1px solid rgba(0,0,0,.06);
+    }
+    #screen2 .s2-card-head{
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap:10px; margin-bottom: 14px;
+    }
+    #screen2 .s2-card-head .left{
+      display:flex; align-items:center; gap:10px; opacity:.8;
+    }
+    #screen2 .s2-card-head .chev{
+      width: 34px; height: 34px;
+      border-radius: 999px;
+      border: 2px solid rgba(0,0,0,.10);
+      display:grid; place-items:center;
+      background:#fff;
+      font-weight:900;
+    }
+    #screen2 .s2-card-head .right{
+      text-align:right;
+    }
+    #screen2 .s2-card-head .right .big{
+      font-weight:900; font-size: 18px;
+    }
+    #screen2 .s2-card-head .right .small{
+      font-size: 12px;
+      opacity:.6;
+      margin-top: 2px;
+      font-weight:700;
+    }
+
+    #screen2 .s2-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    #screen2 input,
+    #screen2 select{
+      width:100%;
+      margin:0 !important;
+      padding: 12px 14px !important;
+      border-radius: 999px !important;
+      border: 1.8px solid rgba(0,0,0,.12) !important;
+      background:#fff;
+      outline:none;
+    }
+    #screen2 select{
+      appearance: none;
+      background-image:
+        linear-gradient(45deg, transparent 50%, rgba(0,0,0,.55) 50%),
+        linear-gradient(135deg, rgba(0,0,0,.55) 50%, transparent 50%);
+      background-position:
+        calc(18px) calc(50% - 2px),
+        calc(12px) calc(50% - 2px);
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+      padding-left: 34px !important;
+    }
+
+    #screen2 .s2-note{
+      margin-top: 10px;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:8px;
+      font-size: 12px;
+      opacity: .75;
+    }
+    #screen2 .s2-info{
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      border: 2px solid rgba(124,58,237,.35);
+      color: #7c3aed;
+      display:grid;
+      place-items:center;
+      font-weight: 900;
+    }
+
+    #screen2 button{
+      margin: 0 !important;
+      border-radius: 999px !important;
+      padding: 14px 16px !important;
+      font-weight: 900 !important;
+    }
+    #screen2 button.secondary{
+      background: transparent !important;
+      color: #111 !important;
+      border: 2px solid rgba(0,0,0,.12) !important;
+      width: 140px !important;
+    }
+
+    #screen2 .s2-actions{
+      position: fixed;
+      left: 0; right: 0;
+      bottom: 18px;
+      display:flex;
+      justify-content:center;
+      gap: 12px;
+      pointer-events:none;
+    }
+    #screen2 .s2-actions button{ pointer-events:auto; }
+    #screen2 .s2-actions .primary{
+      width: min(1100px, calc(100% - 36px - 160px));
+      background: #2563eb !important;
+      color:#fff !important;
+      border: none !important;
+      box-shadow: 0 10px 24px rgba(37,99,235,.25);
+    }
+    #screen2 .s2-actions .back{ width: 140px; }
+
+    /* ===== Screen 3 - Match reference screenshot (scoped) ===== */
+    #screen3{
+      max-width: 1100px;
+      background: linear-gradient(180deg, #f7efe3, #f4e6d5);
+      border-radius: 18px;
+      padding: 0;
+      overflow: hidden;
+    }
+    #screen3 .s3-wrap{
+      padding: 18px 18px 90px;
+    }
+    #screen3 .s3-top{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; margin-bottom: 18px;
+    }
+    #screen3 .s3-pill{
+      border: 2px solid rgba(0,0,0,.10);
+      background: rgba(255,255,255,.35);
+      border-radius: 999px;
+      padding: 10px 14px;
+      display:inline-flex;
+      align-items:center;
+      font-weight: 700;
+      user-select:none;
+    }
+    #screen3 .s3-crumbs{
+      flex: 1;
+      text-align:center;
+      color:#6b7280;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    #screen3 .s3-crumbs b{ color:#111; }
+
+    #screen3 .s3-event{
+      display:flex; gap:16px; align-items:flex-start;
+      padding: 6px 0 16px;
+    }
+    #screen3 .s3-img{
+      width: 92px; height: 92px;
+      border-radius: 18px;
+      object-fit: cover;
+      background:#fff;
+      box-shadow: 0 10px 30px rgba(0,0,0,.10);
+    }
+    #screen3 .s3-title{
+      margin: 6px 0 8px;
+      font-size: 22px;
+      line-height: 1.15;
+      font-weight: 900;
+    }
+    #screen3 .s3-meta{
+      display:flex; align-items:center; gap:8px;
+      font-size: 14px;
+      opacity:.85;
+    }
+
+    #screen3 .s3-summary{
+      margin-top: 10px;
+      border-top: 2px solid rgba(0,0,0,.10);
+      border-bottom: 2px solid rgba(0,0,0,.10);
+      padding: 14px 0;
+    }
+    #screen3 .s3-row{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+      padding: 8px 0;
+      font-weight: 700;
+      opacity:.92;
+    }
+    #screen3 .s3-row .muted{
+      font-weight: 700;
+      opacity: .6;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+    #screen3 .s3-divider{
+      height: 1px;
+      background: rgba(0,0,0,.10);
+      margin: 8px 0;
+    }
+
+    #screen3 .s3-coupon{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin: 14px 0;
+    }
+    #screen3 .s3-coupon input{
+      margin:0 !important;
+      padding: 12px 14px !important;
+      border-radius: 12px !important;
+      border: 1.8px solid rgba(0,0,0,.12) !important;
+      background:#fff;
+      outline:none;
+    }
+    #screen3 .s3-coupon button{
+      width: 120px !important;
+      margin:0 !important;
+      border-radius: 8px !important;
+      padding: 12px 10px !important;
+      background:#2563eb !important;
+      color:#fff !important;
+      font-weight: 900 !important;
+    }
+
+    #screen3 .s3-checks{
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+      margin: 10px 0 18px;
+    }
+    #screen3 .s3-checks label{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:10px;
+      font-size: 14px;
+      opacity:.9;
+    }
+    #screen3 .s3-checks input[type="checkbox"]{
+      width:auto !important;
+      margin:0 !important;
+      transform: scale(1.1);
+    }
+    #screen3 .s3-checks a{
+      color:#2563eb;
+      text-decoration: underline;
+      font-weight: 700;
+    }
+
+    #screen3 .s3-paycard{
+      background:#fff;
+      border-radius: 14px;
+      border: 2px solid rgba(0,0,0,.10);
+      box-shadow: 0 10px 30px rgba(0,0,0,.08);
+      padding: 18px;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    #screen3 .s3-paygrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    #screen3 .s3-paygrid input{
+      margin:0 !important;
+      padding: 12px 14px !important;
+      border-radius: 999px !important;
+      border: 1.8px solid rgba(0,0,0,.12) !important;
+      background:#fff;
+      outline:none;
+    }
+    #screen3 .s3-paygrid .full{ grid-column: 1 / -1; }
+
+    #screen3 .s3-actions{
+      margin-top: 14px;
+      display:flex;
+      justify-content:center;
+    }
+    #screen3 .s3-actions button{
+      width: 100% !important;
+      padding: 16px 18px !important;
+      border-radius: 999px !important;
+      background:#2563eb !important;
+      color:#fff !important;
+      font-weight: 900 !important;
+      box-shadow: 0 10px 24px rgba(37,99,235,.25);
+      margin:0 !important;
+    }
+
+    /* מובייל */
+    @media (max-width: 820px){
+      #screen1, #screen2, #screen3{ max-width: 420px; }
+      #screen2 .s2-grid{ grid-template-columns: 1fr; }
+      #screen3 .s3-paygrid{ grid-template-columns: 1fr; }
+      #screen2 button.secondary{ width: 110px !important; }
+      #screen2 .s2-actions .primary{ width: calc(100% - 36px - 120px); }
+      #screen3 .s3-coupon{ flex-direction: column; align-items: stretch; }
+      #screen3 .s3-coupon button{ width: 100% !important; border-radius: 12px !important; }
+    }
   </style>
 </head>
 
 <body>
+  <h1>Enter Details</h1>
 
-<form id="nameForm">
+  <form id="nameForm">
+    <input type="text" id="firstName" placeholder="First Name" required><br><br>
+    <input type="text" id="lastName" placeholder="Last Name" required><br><br>
 
-  <!-- מסך 1 – בחירת כרטיס -->
-  <div class="screen active" id="screen1">
-    <div class="s1-wrap">
-      <h2>בחירת כרטיס</h2>
+    <!-- מסך 1 – בחירת כרטיס -->
+    <div class="screen active" id="screen1">
+      <div class="s1-wrap">
 
-      <label>
-        <input type="radio" name="cardType" value="regular" required>
-        כרטיס רגיל
-      </label>
+        <div class="s1-top">
+          <div class="s1-pill">← חזרה</div>
+          <div class="s1-crumbs"><b>כרטיסים</b> ← הכנס פרטים ← תשלום</div>
+          <div class="s1-pill">✕</div>
+        </div>
 
-      <label>
-        <input type="radio" name="cardType" value="vip">
-        כרטיס VIP
-      </label>
+        <div class="s1-event">
+          <!-- ✅ שינוי תמונה בקלות: רק מחליפים src -->
+          <img class="s1-img" id="eventImage" src="YOUR_IMAGE_URL_HERE" alt="תמונת מסיבה">
+          <div>
+            <!-- ✅ שינוי שם בקלות: רק מחליפים טקסט כאן -->
+            <div class="s1-title" id="eventName">EXPO LAND / PURIM FESTIVAL</div>
+            <div class="s1-meta">📅 March 5th 2026, 23:00</div>
+          </div>
+        </div>
 
-      <button type="button" onclick="nextScreen(1)">המשך</button>
+        <div class="s1-card">
+          <div class="s1-card-top">
+            <!-- UI כמות (לא משנה לוגיקה) -->
+            <div class="s1-qty" aria-label="כמות">
+              <div class="btn">+</div>
+              <div class="num">1</div>
+              <div class="btn">−</div>
+            </div>
+
+            <div class="s1-right">
+              <div class="s1-ticket-name">FIRST ROUND</div>
+              <div class="s1-prices">
+                <span class="s1-old">399₪</span>
+                <span class="s1-new">220.00₪</span>
+              </div>
+            </div>
+
+            <!-- שומר בדיוק על name/value כדי שהלוגיקה תישאר זהה -->
+            <div style="width:100%; margin-top: 10px;">
+              <label class="s1-radio">
+                <input type="radio" name="cardType" value="regular" required>
+                כרטיס רגיל
+              </label>
+
+              <label class="s1-radio">
+                <input type="radio" name="cardType" value="vip">
+                כרטיס VIP
+              </label>
+            </div>
+          </div>
+
+          <div class="s1-divider"></div>
+
+          <div class="s1-bottom">
+            <div class="s1-info">i</div>
+            <div>מחיר כרטיסים 200₪ + עלות שירות ברכישה אונליין 20.00₪ לכרטיס</div>
+          </div>
+        </div>
+
+        <!-- אותו כפתור/לוגיקה בדיוק -->
+        <div class="s1-actions">
+          <button type="button" onclick="nextScreen(1)">התקדם – ₪ 220.00</button>
+        </div>
+
+      </div>
     </div>
-  </div>
 
-  <!-- מסך 2 – הכנסת פרטים -->
-  <div class="screen" id="screen2">
-    <h2>הכנסת פרטים אישיים</h2>
+    <input type="email" id="email" placeholder="Email" required><br><br>
 
-    <input type="text" id="firstName" placeholder="שם פרטי" required>
-    <input type="text" id="lastName" placeholder="שם משפחה" required>
-    <input type="email" id="email" placeholder="אימייל" required>
-    <input type="number" id="phoneNumber" placeholder="טלפון" required>
-    <input type="date" id="birthDate" required>
+    <!-- מסך 2 – פרטים אישיים -->
+    <div class="screen" id="screen2">
+      <div class="s2-wrap">
 
-    <select id="gender" required>
-      <option value="">מגדר</option>
-      <option value="male">זכר</option>
-      <option value="female">נקבה</option>
-      <option value="other">אחר</option>
-    </select>
+        <div class="s2-top">
+          <div class="s2-pill">← חזרה</div>
+          <div class="s2-crumbs">תשלום ← <b>הכנס פרטים</b> ← כרטיסים</div>
+          <div class="s2-pill">✕</div>
+        </div>
 
-    <input type="text" id="instagram" placeholder="אינסטגרם">
-    <input type="number" id="ID" placeholder="תעודת זהות" required>
+        <div class="s2-card">
+          <div class="s2-card-head">
+            <div class="left">
+              <div class="chev">⌄</div>
+            </div>
+            <div class="right">
+              <div class="big">משתמש 1</div>
+              <div class="small">FIRST ROUND</div>
+            </div>
+          </div>
 
-    <button type="button" class="secondary" onclick="prevScreen(2)">חזור</button>
-    <button type="button" onclick="nextScreen(2)">המשך</button>
-  </div>
+          <!-- אותם שדות/IDs שלך בדיוק -->
+          <div class="s2-grid">
+            <input type="number" id="phoneNumber" placeholder="Phone Number" required>
+            <input type="text" id="firstName" placeholder="First Name" required>
 
-  <!-- מסך 3 – תשלום -->
-  <div class="screen" id="screen3">
-    <h2>פרטי אשראי</h2>
+            <input type="text" id="lastName" placeholder="Last Name" required>
+            <input type="date" id="birthDate" required>
 
-    <input type="number" id="creditCardNumber" placeholder="Credit Card Number" required>
-    <input type="text" id="expire" placeholder="Expire (MM/YY)" required>
-    <input type="number" id="cvv" placeholder="CVV" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <select id="gender" required>
+              <option value="">Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
 
-    <input type="text" id="coupon" placeholder="קוד קופון">
+            <input type="date" id="birthDate" required>
+            <input type="text" id="instagram" placeholder="Instagram">
 
-    <label class="checkbox">
-      <input type="checkbox" id="terms" required>
-      אני מאשר/ת את תנאי השימוש והתקנון
-    </label>
+            <select id="gender" required>
+              <option value="">Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+            <input type="number" id="ID" placeholder="ID" required>
 
-    <label class="checkbox">
-      <input type="checkbox" id="updates">
-      אני רוצה לקבל עדכונים
-    </label>
+            <input type="text" id="instagram" placeholder="Instagram">
+            <input type="number" id="ID" placeholder="ID" required>
 
-    <button type="button" class="secondary" onclick="prevScreen(3)">חזור</button>
-    <button type="submit">לתשלום</button>
-  </div>
+            <input type="number" id="creditCardNumber" placeholder="Credit Card Number" required>
+            <div></div>
+          </div>
 
-</form>
+          <div class="s2-note">
+            <span>הסבר כאן להכניס את הלינק</span>
+            <span class="s2-info">i</span>
+          </div>
+        </div>
 
-<script>
-  function nextScreen(current) {
-    document.getElementById(`screen${current}`).classList.remove("active");
-    document.getElementById(`screen${current + 1}`).classList.add("active");
-  }
-  function prevScreen(current) {
-    document.getElementById(`screen${current}`).classList.remove("active");
-    document.getElementById(`screen${current - 1}`).classList.add("active");
-  }
-</script>
+        <!-- אותם כפתורים/לוגיקה בדיוק -->
+        <div class="s2-actions">
+          <button type="button" class="secondary back" onclick="prevScreen(2)">חזור</button>
+          <button type="button" class="primary" onclick="nextScreen(2)">הבא - ₪ 220.00</button>
+        </div>
 
-<script src="firebase.js" defer></script>
+      </div>
+    </div>
 
+    <input type="text" id="expire" placeholder="Expire (MM/YY)" required><br><br>
+
+    <!-- מסך 3 – תשלום -->
+    <div class="screen" id="screen3">
+      <div class="s3-wrap">
+
+        <div class="s3-top">
+          <div class="s3-pill">← חזרה</div>
+          <div class="s3-crumbs"><b>תשלום</b> ← הכנס פרטים ← כרטיסים</div>
+          <div class="s3-pill">✕</div>
+        </div>
+
+        <div class="s3-event">
+          <img class="s3-img" src="YOUR_IMAGE_URL_HERE" alt="תמונת מסיבה">
+          <div>
+            <div class="s3-title">EXPO LAND / PURIM FESTIVAL</div>
+            <div class="s3-meta">📅 March 5th 2026, 23:00</div>
+          </div>
+        </div>
+
+        <div class="s3-summary">
+          <div class="s3-row">
+            <div>
+              FIRST ROUND
+              <div class="muted">1 x ₪220.00</div>
+            </div>
+            <div>₪220.00</div>
+          </div>
+
+          <div class="s3-divider"></div>
+
+          <div class="s3-row">
+            <div>סך הכל</div>
+            <div>₪220.00</div>
+          </div>
+        </div>
+
+        <div class="s3-coupon">
+          <!-- שומר על אותו id שלך -->
+          <input type="text" id="coupon" placeholder="קוד קופון">
+          <button type="button">החל</button>
+        </div>
+
+        <div class="s3-checks">
+          <!-- שומר על אותו id שלך -->
+          <label>
+            אני מאשר את תנאי השימוש <a href="#" onclick="return false;">תקנון</a>
+            <input type="checkbox" id="terms" required>
+          </label>
+
+          <label>
+            אני מאשר קבלת עדכונים <a href="#" onclick="return false;">תקנון</a>
+            <input type="checkbox" id="updates">
+          </label>
+        </div>
+
+        <div class="s3-paycard">
+          <div class="s3-paygrid">
+            <!-- שומר על אותם ids שלך בדיוק -->
+            <input class="full" type="number" id="creditCardNumber" placeholder="Credit Card Number" required>
+            <input type="text" id="expire" placeholder="Expire (MM/YY)" required>
+            <input type="number" id="cvv" placeholder="CVV" required>
+          </div>
+
+          <div class="s3-actions">
+            <!-- אותו כפתור submit שלך (לוגיקה זהה) -->
+            <button type="submit">שלם ₪ 220</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </form>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <!-- ניווט בין מסכים (לוגיקה זהה) -->
+  <script>
+    function nextScreen(current) {
+      document.getElementById(`screen${current}`).classList.remove("active");
+      document.getElementById(`screen${current + 1}`).classList.add("active");
+    }
+    function prevScreen(current) {
+      document.getElementById(`screen${current}`).classList.remove("active");
+      document.getElementById(`screen${current - 1}`).classList.add("active");
+    }
+  </script>
+
+  <!-- הלוגיקה שלך -->
+  <script src="firebase.js" defer></script>
 </body>
-</html>
