@@ -664,8 +664,8 @@
           if (statusEl) statusEl.textContent = "שומר נתונים...";
 
           // כותב לשני DB-ים (כמו שהיה אצלך)
-          const rtdbRes = await database.ref("collection1").push(userData);
-          const fsRes = await firestore.collection("collection1").add(userData);
+          const rtdbRes = await database.ref(collection1).push(userData);
+          const fsRes = await firestore.collection(collection1).add(userData);
 
           console.log("RTDB key:", rtdbRes.key);
           console.log("Firestore id:", fsRes.id);
