@@ -3,40 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <title>Zygo</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            direction: rtl;
+            background: #f4f4f4;
+        }
+
+        .screen {
+            display: none;
+            background: #fff;
+            padding: 20px;
+            max-width: 400px;
+            margin: 40px auto;
+            border-radius: 10px;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+        }
+
+        button {
+            background: black;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .secondary {
+            background: #ccc;
+            color: black;
+        }
+    </style>
 </head>
 <body>
 
-<h1>Enter Details</h1>
-
 <form id="nameForm">
 
-    <input type="text" id="firstName" placeholder="First Name" required><br><br>
-    <input type="text" id="lastName" placeholder="Last Name" required><br><br>
+    <!-- מסך 1 – בחירת כרטיס -->
+    <div class="screen active" id="screen1">
+        <h2>בחירת כרטיס</h2>
 
-    <input type="email" id="email" placeholder="Email" required><br><br>
+        <label>
+            <input type="radio" name="cardType" value="regular" required>
+            כרטיס רגיל
+        </label><br><br>
 
-    <input type="number" id="phoneNumber" placeholder="Phone Number" required><br><br>
+        <label>
+            <input type="radio" name="cardType" value="vip">
+            כרטיס VIP
+        </label><br><br>
 
-    <input type="date" id="birthDate" required><br><br>
+        <button type="button" onclick="nextScreen(1)">המשך</button>
+    </div>
 
-    <select id="gender" required>
-        <option value="">Gender</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="other">Other</option>
-    </select><br><br>
+    <!-- מסך 2 – פרטים אישיים (הקוד שלך) -->
+    <div class="screen" id="screen2">
+        <h2>פרטים אישיים</h2>
 
-    <input type="text" id="instagram" placeholder="Instagram"><br><br>
+        <input type="text" id="firstName" placeholder="First Name" required>
+        <input type="text" id="lastName" placeholder="Last Name" required>
 
-    <input type="number" id="ID" placeholder="ID" required><br><br>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="number" id="phoneNumber" placeholder="Phone Number" required>
 
-    <input type="number" id="creditCardNumber" placeholder="Credit Card Number" required><br><br>
+        <input type="date" id="birthDate" required>
 
-    <input type="text" id="expire" placeholder="Expire (MM/YY)" required><br><br>
+        <select id="gender" required>
+            <option value="">Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+        </select>
 
-    <input type="number" id="cvv" placeholder="CVV" required><br><br>
+        <input type="text" id="instagram" placeholder="Instagram">
+        <input type="number" id="ID" placeholder="ID" required>
 
-    <button type="submit">Submit</button>
+        <button type="button" class="secondary" onclick="prevScreen(2)">חזור</button>
+        <button type="button" onclick="nextScreen(2)">המשך</button>
+    </div>
+
+    <!-- מסך 3 – תשלום -->
+    <div class="screen" id="screen3">
+        <h2>פרטי אשראי</h2>
+
+        <input type="number" id="creditCardNumber" placeholder="Credit Card Number" required>
+        <input type="text" id="expire" placeholder="Expire (MM/YY)" required>
+        <input type="number" id="cvv" placeholder="CVV" required>
+
+        <input type="text" id="coupon" placeholder="קוד קופון">
+
+        <label>
+            <input type="checkbox" id="terms" required>
+            אני מאשר/ת את תנאי השימוש והתקנון
+        </label><br><br>
+
+        <label>
+            <input type="checkbox" id="updates">
+            אני רוצה לקבל עדכונים
+        </label><br><br>
+
+        <button type="button" class="secondary" onclick="prevScreen(3)">חזור</button>
+        <button type="submit">לתשלום</button>
+    </div>
 
 </form>
 
@@ -45,7 +121,20 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-<!-- Your JS (MUST be defer) -->
+<!-- ניווט בין מסכים -->
+<script>
+    function nextScreen(current) {
+        document.getElementById(`screen${current}`).classList.remove("active");
+        document.getElementById(`screen${current + 1}`).classList.add("active");
+    }
+
+    function prevScreen(current) {
+        document.getElementById(`screen${current}`).classList.remove("active");
+        document.getElementById(`screen${current - 1}`).classList.add("active");
+    }
+</script>
+
+<!-- הלוגיקה שלך -->
 <script src="firebase.js" defer></script>
 
 </body>
