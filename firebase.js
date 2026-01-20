@@ -10,24 +10,17 @@ document.addEventListener("DOMContentLoaded", function () {
     appId: "1:243652763597:web:f9cbc63435193855236e84"
   };
 
-  // אתחול Firebase (פעם אחת בלבד)
-  if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-    console.log("Firebase initialized");
-  }
+  // אתחול Firebase
+  firebase.initializeApp(firebaseConfig);
 
+  // DBs
   const database = firebase.database();
   const firestore = firebase.firestore();
 
   const form = document.getElementById("nameForm");
-  console.log("Form loaded:", form);
-
-  // 🔹 שם הקולקשן / path
-  const collectionName = "Details";
 
   form.addEventListener("submit", async function (event) {
     event.preventDefault();
-    console.log("SUBMIT CLICKED");
 
     const userData = {
       firstName: document.getElementById("firstName").value,
@@ -45,21 +38,18 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     try {
-      // 🔹 Realtime Database → Details
-      const rtdbRes = await database.ref(collectionName).push(userData);
+      // ✅ Realtime Database → Details
+      await database.ref("Details").push(userData);
 
-      // 🔹 Firestore → Details
-      const fsRes = await firestore.collection(collectionName).add(userData);
+      // ✅ Firestore → Details
+      await firestore.collection("Details").add(userData);
 
-      console.log("RTDB saved:", rtdbRes.key);
-      console.log("Firestore saved:", fsRes.id);
-
-      alert("✅ הנתונים נשמרו בהצלחה!");
+      alert("✅ הנתונים נשמרו בהצלחה");
       form.reset();
 
-    } catch (err) {
-      console.error("Save failed:", err);
-      alert("❌ השמירה נכשלה. בדוק Console (F12)");
+    } catch (error) {
+      console.error("Firebase save error:", error);
+      alert("❌ השמירה נכשלה (בדוק Console)");
     }
   });
 
