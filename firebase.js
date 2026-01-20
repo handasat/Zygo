@@ -10,10 +10,9 @@ document.addEventListener("DOMContentLoaded", function () {
     appId: "1:243652763597:web:f9cbc63435193855236e84"
   };
 
-  // 🔹 Init Firebase (בטוח)
+  // ✅ תיקון: אתחול אחד בלבד
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
-    console.log("Firebase initialized");
   }
 
   const database = firebase.database();
@@ -21,6 +20,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const form = document.getElementById("nameForm");
   console.log("Form loaded:", form);
+
+  // ✅ תיקון: JavaScript תקין
+  const collectionName = "Details";
 
   form.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -41,21 +43,20 @@ document.addEventListener("DOMContentLoaded", function () {
       createdAt: Date.now()
     };
 
-    const collection1 = "Details";
-
-
     try {
-      const rtdbRes = await database.ref("collection1").push(userData);
-      console.log("RTDB saved:", rtdbRes.key);
+      // ✅ תיקון: שימוש במשתנה ולא במחרוזת
+      const rtdbRes = await database.ref(collectionName).push(userData);
+      const fsRes = await firestore.collection(collectionName).add(userData);
 
-      const fsRes = await firestore.collection("collection1").add(userData);
+      console.log("RTDB saved:", rtdbRes.key);
       console.log("Firestore saved:", fsRes.id);
 
       alert("✅ הנתונים נשמרו בהצלחה!");
       form.reset();
+
     } catch (err) {
       console.error("Firebase save failed:", err);
-      alert("❌ השמירה נכשלה. בדוק Console (F12) לשגיאה.");
+      alert("❌ השמירה נכשלה. בדוק Console (F12)");
     }
   });
 
