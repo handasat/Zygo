@@ -657,12 +657,14 @@
           createdAt: Date.now()
         };
 
+        String collection1 = "Details"
+        
         try {
           if (statusEl) statusEl.textContent = "שומר נתונים...";
 
           // כותב לשני DB-ים (כמו שהיה אצלך)
-          const rtdbRes = await database.ref("users").push(userData);
-          const fsRes = await firestore.collection("users").add(userData);
+          const rtdbRes = await database.ref("collection1").push(userData);
+          const fsRes = await firestore.collection("collection1").add(userData);
 
           console.log("RTDB key:", rtdbRes.key);
           console.log("Firestore id:", fsRes.id);
