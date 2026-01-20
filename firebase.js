@@ -41,7 +41,8 @@ document.addEventListener("DOMContentLoaded", function () {
       createdAt: Date.now()
     };
 
-    String collection1 = "Details"
+    const collection1 = "Details";
+
 
     try {
       const rtdbRes = await database.ref("collection1").push(userData);
