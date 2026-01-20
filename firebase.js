@@ -41,11 +41,13 @@ document.addEventListener("DOMContentLoaded", function () {
       createdAt: Date.now()
     };
 
+    String collection1 = "Details"
+
     try {
-      const rtdbRes = await database.ref("users").push(userData);
+      const rtdbRes = await database.ref("collection1").push(userData);
       console.log("RTDB saved:", rtdbRes.key);
 
-      const fsRes = await firestore.collection("users").add(userData);
+      const fsRes = await firestore.collection("collection1").add(userData);
       console.log("Firestore saved:", fsRes.id);
 
       alert("✅ הנתונים נשמרו בהצלחה!");
