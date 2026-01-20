@@ -1,4 +1,17 @@
+// 🔹 Firebase configuration (חובה!)
+const firebaseConfig = {
+  apiKey: "AIzaSyDZVrncvPwEg6IDHjloweJNjrpj32lZy5g",
+  authDomain: "zygo-acf32.firebaseapp.com",
+  databaseURL: "https://zygo-acf32-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "zygo-acf32",
+  storageBucket: "zygo-acf32.firebasestorage.app",
+  messagingSenderId: "243652763597",
+  appId: "1:243652763597:web:f9cbc63435193855236e84"
+};
+
+// 🔹 Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+console.log("Firebase initialized");
 
 // Realtime Database
 const database = firebase.database();
@@ -10,6 +23,7 @@ const form = document.getElementById("nameForm");
 
 form.addEventListener("submit", function (event) {
   event.preventDefault();
+  console.log("Form submitted");
 
   const userData = {
     firstName: document.getElementById("firstName").value,
