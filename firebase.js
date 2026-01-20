@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-  // 🔹 Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyDZVrncvPwEg6IDHjloweJNjrpj32lZy5g",
     authDomain: "zygo-acf32.firebaseapp.com",
@@ -11,18 +10,19 @@ document.addEventListener("DOMContentLoaded", function () {
     appId: "1:243652763597:web:f9cbc63435193855236e84"
   };
 
-  // 🔹 Init Firebase
-  firebase.initializeApp(firebaseConfig);
-  console.log("Firebase initialized");
+  // 🔹 Init Firebase (בטוח)
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+    console.log("Firebase initialized");
+  }
 
-  // Databases
   const database = firebase.database();
   const firestore = firebase.firestore();
 
   const form = document.getElementById("nameForm");
   console.log("Form loaded:", form);
 
-  form.addEventListener("submit", function (event) {
+  form.addEventListener("submit", async function (event) {
     event.preventDefault();
     console.log("SUBMIT CLICKED");
 
@@ -41,14 +41,19 @@ document.addEventListener("DOMContentLoaded", function () {
       createdAt: Date.now()
     };
 
-    // 🔹 Realtime Database
-    database.ref("users").push(userData);
+    try {
+      const rtdbRes = await database.ref("users").push(userData);
+      console.log("RTDB saved:", rtdbRes.key);
 
-    // 🔹 Firestore
-    firestore.collection("users").add(userData);
+      const fsRes = await firestore.collection("users").add(userData);
+      console.log("Firestore saved:", fsRes.id);
 
-    alert("✅ הנתונים נשמרו בהצלחה!");
-    form.reset();
+      alert("✅ הנתונים נשמרו בהצלחה!");
+      form.reset();
+    } catch (err) {
+      console.error("Firebase save failed:", err);
+      alert("❌ השמירה נכשלה. בדוק Console (F12) לשגיאה.");
+    }
   });
 
 });
