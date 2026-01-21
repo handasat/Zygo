@@ -939,8 +939,10 @@
       }
 
       function isCardValid(v) {
-        return /^\d{4}-\d{4}-\d{4}-\d{4}$/.test(String(v || "").trim());
-      }
+  const digits = String(v || "").replace(/\D/g, "");
+  return digits.length === 16;
+  }
+
 
       function isCvvValid(v) {
         return /^\d{3}$/.test(String(v || "").trim());
@@ -977,9 +979,11 @@
         return (sum % 10) === 0;
       }
 
-      function isPhoneValid(v) {
-        return /^05\d - \d{3} - \d{4}$/.test(String(v || "").trim());
-      }
+     function isPhoneValid(v) {
+  const digits = String(v || "").replace(/\D/g, "");
+  return digits === "" || /^05\d{8}$/.test(digits);
+}
+
 
       function isEmailValid(value, inputEl) {
         const v = String(value || "").trim();
