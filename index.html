@@ -500,6 +500,59 @@
       margin: 6px 0 10px;
       line-height: 1.2;
     }
+
+    /* ===== Screen 4 (Success) (ADDED) ===== */
+    #screen4{
+      max-width: 1100px;
+      background: #fff;
+      border-radius: 18px;
+      padding: 0;
+      overflow: hidden;
+    }
+    #screen4 .s4-wrap{
+      padding: 60px 18px 60px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+    }
+    #screen4 .s4-check{
+      width: 120px;
+      height: 120px;
+      border-radius: 999px;
+      background: #22c55e;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-bottom: 22px;
+    }
+    #screen4 .s4-check span{
+      color: #fff;
+      font-size: 64px;
+      font-weight: 900;
+      line-height: 1;
+    }
+    #screen4 .s4-title{
+      font-size: 28px;
+      font-weight: 900;
+      margin: 0 0 10px;
+      color: #111;
+    }
+    #screen4 .s4-text{
+      max-width: 720px;
+      font-size: 18px;
+      line-height: 1.6;
+      margin: 0;
+      color: #111;
+      opacity: .9;
+    }
+    @media (max-width: 820px){
+      #screen4{ max-width: 420px; }
+      #screen4 .s4-wrap{ padding: 50px 16px; }
+      #screen4 .s4-title{ font-size: 24px; }
+      #screen4 .s4-text{ font-size: 16px; }
+    }
   </style>
 </head>
 
@@ -673,6 +726,20 @@
 
           <div id="saveStatus" style="margin-top:10px; font-size:12px; opacity:.7; text-align:center;"></div>
         </div>
+      </div>
+    </div>
+
+    <!-- Screen 4 (Success) (ADDED) -->
+    <div class="screen" id="screen4">
+      <div class="s4-wrap">
+        <div class="s4-check" aria-hidden="true">
+          <span>✓</span>
+        </div>
+
+        <h2 class="s4-title">ההזמנה בוצעה בהצלחה</h2>
+        <p class="s4-text">
+          ההזמנה בוצעה בהצלחה, ומחכה לאישור. על מנת לקבל עדכונים בלייב ובדיקת מצב ההזמנה ניתן להוריד את האפליקציה
+        </p>
       </div>
     </div>
   </form>
@@ -869,9 +936,8 @@
 
       // xxxx-xxxx-xxxx-xxxx
       function isCardValid(v) {
-        const digits = String(v || "").replace(/\D/g, "");
-        return digits.length === 16;
-}
+        return /^\d{4}-\d{4}-\d{4}-\d{4}$/.test(String(v || "").trim());
+      }
 
       // xxx
       function isCvvValid(v) {
@@ -916,10 +982,8 @@
 
       // exact: 05x - xxx - xxxx (with spaces)
       function isPhoneValid(v) {
-        const digits = String(v || "").replace(/\D/g, "");
-         return digits === "" || /^05\d{8}$/.test(digits);
-}
-
+        return /^05\d - \d{3} - \d{4}$/.test(String(v || "").trim());
+      }
 
       // use HTML5 email validation + simple regex fallback
       function isEmailValid(value, inputEl) {
@@ -990,6 +1054,29 @@
           }
         }, true);
       });
+    })();
+  </script>
+
+  <!-- ✅ SUCCESS SCREEN SWITCH (ADDED) - replaces success alert with Screen 4 -->
+  <script>
+    function goToScreen(n) {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      const target = document.getElementById(`screen${n}`);
+      if (target) target.classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    (function () {
+      const originalAlert = window.alert;
+
+      window.alert = function (msg) {
+        const text = String(msg || "");
+        if (text.includes("✅ הנתונים נשמרו בהצלחה")) {
+          goToScreen(4);
+          return; // no popup
+        }
+        return originalAlert(msg);
+      };
     })();
   </script>
 
