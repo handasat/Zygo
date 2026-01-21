@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
       vipQty: 0,
       regularUnit: 220,
       vipUnit: 320
+      window.location.replace("https://zygo.co.il/event/690116209800106398/ZF10k73u9");
     };
 
     const totalQty = (Number(os.regularQty) || 0) + (Number(os.vipQty) || 0);
