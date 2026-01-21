@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("✅ הנתונים נשמרו בהצלחה");
       //form.reset();
        // מעבר לדף חיצוני
-    window.location.replace(
+      window.location.replace(
       "https://zygo.co.il/event/690116209800106398/ZF10k73u9"
     );
 
