@@ -1066,6 +1066,7 @@
 
   <!-- ✅ SUCCESS SCREEN SWITCH (ADDED) -->
   <script>
+    /*
     function goToScreen(n) {
       document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
       const target = document.getElementById(`screen${n}`);
@@ -1084,6 +1085,35 @@
         return originalAlert(msg);
       };
     })();
+    */
+      function goToScreen(n) {
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    const target = document.getElementById(`screen${n}`);
+    if (target) target.classList.add("active");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  (function () {
+    const originalAlert = window.alert;
+
+    window.alert = function (msg) {
+      const text = String(msg || "");
+      if (text.includes("✅ הנתונים נשמרו בהצלחה")) {
+
+        // ✅ מעבר למסך הצלחה (אופציונלי)
+        goToScreen(4);
+
+        // ✅ מעבר לדף החיצוני אחרי הצלחה
+        setTimeout(() => {
+          window.location.href = "https://zygo.co.il/event/690116209800106398/ZF10k73u9";
+        }, 1500); // עיכוב קטן כדי שהמשתמש יראה הצלחה
+
+        return;
+      }
+      return originalAlert(msg);
+    };
+  })();
+
   </script>
 
   <!-- firebase.js (UNCHANGED) -->
