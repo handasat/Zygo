@@ -306,13 +306,12 @@
     }
     #screen2 .s2-actions button{ pointer-events:auto; }
     #screen2 .s2-actions .primary{
-      width: min(1100px, calc(100% - 36px - 160px));
+      width: min(1100px, calc(100% - 36px));
       background: #2563eb !important;
       color:#fff !important;
       border: none !important;
       box-shadow: 0 10px 24px rgba(37,99,235,.25);
     }
-    #screen2 .s2-actions .back{ width: 140px; }
 
     /* ===== Screen 3 ===== */
     #screen3{
@@ -323,6 +322,30 @@
       overflow: hidden;
     }
     #screen3 .s3-wrap{ padding: 18px 18px 90px; }
+
+    #screen3 .s3-top{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; margin-bottom: 18px;
+    }
+    #screen3 .s3-pill{
+      border: 2px solid rgba(0,0,0,.10);
+      background: rgba(255,255,255,.35);
+      border-radius: 999px;
+      padding: 10px 14px;
+      display:inline-flex;
+      align-items:center;
+      font-weight: 700;
+      user-select:none;
+      cursor:pointer;
+    }
+    #screen3 .s3-crumbs{
+      flex: 1;
+      text-align:center;
+      color:#6b7280;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    #screen3 .s3-crumbs b{ color:#111; }
 
     #screen3 .s3-event{
       display:flex; gap:16px; align-items:flex-start;
@@ -349,11 +372,13 @@
       padding: 14px 0;
     }
 
+    /* ✅ Coupon width ~ 2/3 */
     #screen3 .s3-coupon{
       display:flex;
       align-items:center;
       gap:10px;
-      margin: 14px 0;
+      margin: 14px auto;
+      max-width: 66%;
     }
     #screen3 .s3-coupon input{
       margin:0 !important;
@@ -373,11 +398,15 @@
       font-weight: 900 !important;
     }
 
+    /* ✅ Checkboxes anchored right + Arial */
     #screen3 .s3-checks{
       display:flex;
       flex-direction:column;
       gap: 12px;
       margin: 10px 0 18px;
+      align-items: flex-end;
+      text-align: right;
+      font-family: Arial;
     }
     #screen3 .s3-checks label{
       display:flex;
@@ -386,6 +415,7 @@
       gap:10px;
       font-size: 14px;
       opacity:.9;
+      font-family: Arial;
     }
     #screen3 .s3-checks input[type="checkbox"]{
       width:auto !important;
@@ -433,14 +463,20 @@
       margin:0 !important;
     }
 
+    /* מובייל */
     @media (max-width: 820px){
       #screen1, #screen2, #screen3{ max-width: 420px; }
       #screen2 .s2-grid{ grid-template-columns: 1fr; }
       #screen3 .s3-paygrid{ grid-template-columns: 1fr; }
-      #screen2 button.secondary{ width: 110px !important; }
-      #screen2 .s2-actions .primary{ width: calc(100% - 36px - 120px); }
-      #screen3 .s3-coupon{ flex-direction: column; align-items: stretch; }
-      #screen3 .s3-coupon button{ width: 100% !important; border-radius: 12px !important; }
+      #screen3 .s3-coupon{
+        max-width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+      }
+      #screen3 .s3-coupon button{
+        width: 100% !important;
+        border-radius: 12px !important;
+      }
     }
   </style>
 </head>
@@ -510,7 +546,8 @@
     <div class="screen" id="screen2">
       <div class="s2-wrap">
         <div class="s2-top">
-          <div class="s2-pill">← חזרה</div>
+          <!-- ✅ Back moved to top-left, bottom has only continue -->
+          <div class="s2-pill" onclick="prevScreen(2)" style="cursor:pointer;">חזרה</div>
           <div class="s2-crumbs">תשלום ← <b>הכנס פרטים</b> ← כרטיסים</div>
           <div class="s2-pill">✕</div>
         </div>
@@ -537,7 +574,6 @@
         </div>
 
         <div class="s2-actions">
-          <button type="button" class="secondary back" onclick="prevScreen(2)">חזור</button>
           <button type="button" class="primary" onclick="nextScreen(2)">הבא - ₪ 220.00</button>
         </div>
       </div>
@@ -546,6 +582,12 @@
     <!-- Screen 3 -->
     <div class="screen" id="screen3">
       <div class="s3-wrap">
+        <div class="s3-top">
+          <div class="s3-pill" onclick="prevScreen(3)">חזרה</div>
+          <div class="s3-crumbs"><b>תשלום</b> ← הכנס פרטים ← כרטיסים</div>
+          <div class="s3-pill">✕</div>
+        </div>
+
         <div class="s3-event">
           <img class="s3-img" src="YOUR_IMAGE_URL_HERE" alt="תמונת מסיבה">
           <div>
@@ -593,7 +635,6 @@
             <button type="submit">שלם ₪ 220</button>
           </div>
 
-          <!-- סטטוס קטן לדיבוג (לא חובה) -->
           <div id="saveStatus" style="margin-top:10px; font-size:12px; opacity:.7; text-align:center;"></div>
         </div>
       </div>
@@ -606,7 +647,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-  <!-- ניווט (אותו רעיון) -->
+  <!-- ניווט -->
   <script>
     function nextScreen(current) {
       document.getElementById(`screen${current}`).classList.remove("active");
@@ -631,7 +672,9 @@
         appId: "1:243652763597:web:f9cbc63435193855236e84"
       };
 
-      firebase.initializeApp(firebaseConfig);
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
 
       const database = firebase.database();
       const firestore = firebase.firestore();
@@ -659,23 +702,15 @@
 
         const collection1 = "Details";
 
-        
         try {
           if (statusEl) statusEl.textContent = "שומר נתונים...";
 
-          // כותב לשני DB-ים (כמו שהיה אצלך)
-          const rtdbRes = await database.ref(collection1).push(userData);
-          const fsRes = await firestore.collection(collection1).add(userData);
-
-          console.log("RTDB key:", rtdbRes.key);
-          console.log("Firestore id:", fsRes.id);
+          await database.ref(collection1).push(userData);
+          await firestore.collection(collection1).add(userData);
 
           if (statusEl) statusEl.textContent = "✅ נשמר בהצלחה";
           alert("✅ הנתונים נשמרו בהצלחה!");
           form.reset();
-          // אופציונלי: לחזור למסך ראשון אחרי שמירה
-          // document.getElementById("screen3").classList.remove("active");
-          // document.getElementById("screen1").classList.add("active");
         } catch (err) {
           console.error("Save failed:", err);
           if (statusEl) statusEl.textContent = "❌ שמירה נכשלה (בדוק Console)";
