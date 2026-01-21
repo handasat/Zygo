@@ -12,15 +12,11 @@ exports.onUserCreated = functions.firestore
     const userData = snapshot.data();
     const userId = context.params.userId;
 
-    // לוג לבדיקה
     console.log("🟢 User created");
     console.log("User ID:", userId);
     console.log("User data:", userData);
 
-    // ============================
-    // כאן בהמשך תכתוב:
-    // מה קורה כשנוצר משתמש
-    // ============================
+    await buyTicket(userData);
 
     return null;
   });
