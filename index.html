@@ -488,6 +488,18 @@
         border-radius: 12px !important;
       }
     }
+
+    /* ===== Validation UI (ADDED) ===== */
+    .invalid {
+      border: 2px solid #dc2626 !important;
+      outline: none !important;
+    }
+    .field-error {
+      font-size: 12px;
+      color: #dc2626;
+      margin: 6px 0 10px;
+      line-height: 1.2;
+    }
   </style>
 </head>
 
@@ -824,7 +836,161 @@
     })();
   </script>
 
-  <!-- firebase.js -->
+  <!-- ✅ VALIDATION (ADDED) - blocks submit before firebase.js if invalid -->
+  <script>
+    (function () {
+      const MSG = "שדה לא תקין";
+
+      function getOrCreateErrorEl(input) {
+        const id = input.id + "-error";
+        let el = document.getElementById(id);
+        if (!el) {
+          el = document.createElement("div");
+          el.id = id;
+          el.className = "field-error";
+          el.style.display = "none";
+          input.insertAdjacentElement("afterend", el);
+        }
+        return el;
+      }
+
+      function setInvalid(input, isInvalid) {
+        const errEl = getOrCreateErrorEl(input);
+        if (isInvalid) {
+          input.classList.add("invalid");
+          errEl.textContent = MSG;
+          errEl.style.display = "block";
+        } else {
+          input.classList.remove("invalid");
+          errEl.textContent = "";
+          errEl.style.display = "none";
+        }
+      }
+
+      // xxxx-xxxx-xxxx-xxxx
+      function isCardValid(v) {
+        return /^\d{4}-\d{4}-\d{4}-\d{4}$/.test(String(v || "").trim());
+      }
+
+      // xxx
+      function isCvvValid(v) {
+        return /^\d{3}$/.test(String(v || "").trim());
+      }
+
+      // MM/YY and not expired
+      function isExpireValid(v) {
+        const s = String(v || "").trim();
+        if (!/^\d{2}\/\d{2}$/.test(s)) return false;
+
+        const [mmStr, yyStr] = s.split("/");
+        const mm = Number(mmStr);
+        const yy = Number(yyStr);
+
+        if (!Number.isInteger(mm) || mm < 1 || mm > 12) return false;
+        if (!Number.isInteger(yy) || yy < 0 || yy > 99) return false;
+
+        const fullYear = 2000 + yy;
+
+        // valid through the end of expiry month:
+        // compare now < first day of next month
+        const expiryEnd = new Date(fullYear, mm, 1);
+        const now = new Date();
+
+        return now < expiryEnd;
+      }
+
+      // Israeli ID checksum (9 digits including leading zeros)
+      function isIsraeliIdValid(v) {
+        const id = String(v || "").trim();
+        if (!/^\d{9}$/.test(id)) return false;
+
+        let sum = 0;
+        for (let i = 0; i < 9; i++) {
+          let num = Number(id.charAt(i)) * ((i % 2) + 1);
+          if (num > 9) num = (num % 10) + Math.floor(num / 10);
+          sum += num;
+        }
+        return (sum % 10) === 0;
+      }
+
+      // exact: 05x - xxx - xxxx (with spaces)
+      function isPhoneValid(v) {
+        return /^05\d - \d{3} - \d{4}$/.test(String(v || "").trim());
+      }
+
+      // use HTML5 email validation + simple regex fallback
+      function isEmailValid(value, inputEl) {
+        const v = String(value || "").trim();
+
+        if (inputEl && typeof inputEl.checkValidity === "function") {
+          if (!inputEl.checkValidity()) return false;
+        }
+
+        return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+      }
+
+      function validateField(input) {
+        if (!input) return true;
+
+        const id = input.id;
+        const val = input.value; // DOM always string
+
+        let ok = true;
+
+        if (id === "creditCardNumber") ok = isCardValid(val);
+        else if (id === "cvv") ok = isCvvValid(val);
+        else if (id === "expire") ok = isExpireValid(val);
+        else if (id === "ID") ok = isIsraeliIdValid(val);
+        else if (id === "phoneNumber") ok = isPhoneValid(val);
+        else if (id === "email") ok = isEmailValid(val, input);
+
+        setInvalid(input, !ok);
+        return ok;
+      }
+
+      function validateAll() {
+        const fields = [
+          document.getElementById("creditCardNumber"),
+          document.getElementById("cvv"),
+          document.getElementById("expire"),
+          document.getElementById("ID"),
+          document.getElementById("phoneNumber"),
+          document.getElementById("email"),
+        ];
+
+        let allOk = true;
+        for (const f of fields) {
+          if (f && !validateField(f)) allOk = false;
+        }
+        return allOk;
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("nameForm");
+        if (!form) return;
+
+        // live validation
+        const ids = ["creditCardNumber", "cvv", "expire", "ID", "phoneNumber", "email"];
+        ids.forEach((fid) => {
+          const el = document.getElementById(fid);
+          if (!el) return;
+          el.addEventListener("input", () => validateField(el));
+          el.addEventListener("blur", () => validateField(el));
+        });
+
+        // capture submit BEFORE firebase.js
+        form.addEventListener("submit", (e) => {
+          const ok = validateAll();
+          if (!ok) {
+            e.preventDefault();
+            e.stopImmediatePropagation(); // stops firebase.js submit handler
+          }
+        }, true);
+      });
+    })();
+  </script>
+
+  <!-- firebase.js (UNCHANGED) -->
   <script src="firebase.js" defer></script>
 </body>
 </html>
