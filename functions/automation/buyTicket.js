@@ -1,3 +1,4 @@
+const { chromium } = require("playwright");
 async function buyTicket(userData) {
   console.log("🤖 Automation started");
   console.log("Buying ticket for:", userData.email);
