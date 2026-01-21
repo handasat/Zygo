@@ -84,7 +84,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (statusEl) statusEl.textContent = "✅ נשמר בהצלחה";
       alert("✅ הנתונים נשמרו בהצלחה");
-      form.reset();
+      //form.reset();
+       // מעבר לדף חיצוני
+    window.location.replace(
+      "https://zygo.co.il/event/690116209800106398/ZF10k73u9"
+    );
 
     } catch (error) {
       console.error("Firebase save error:", error);
