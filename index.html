@@ -911,6 +911,14 @@
   <script>
     (function () {
       const MSG = "שדה לא תקין";
+      const NAME_MSG = "הזינו את השם באנגלית";
+
+function isEnglishNameValid(v) {
+  const s = String(v || "").trim();
+  // אותיות באנגלית בלבד, מאפשר רווח/מקף/גרש בין מילים
+  return /^[A-Za-z]+([ '-][A-Za-z]+)*$/.test(s);
+}
+
 
       function getOrCreateErrorEl(input) {
         const id = input.id + "-error";
@@ -925,18 +933,19 @@
         return el;
       }
 
-      function setInvalid(input, isInvalid) {
-        const errEl = getOrCreateErrorEl(input);
-        if (isInvalid) {
-          input.classList.add("invalid");
-          errEl.textContent = MSG;
-          errEl.style.display = "block";
-        } else {
-          input.classList.remove("invalid");
-          errEl.textContent = "";
-          errEl.style.display = "none";
-        }
-      }
+      function setInvalid(input, isInvalid, message) {
+  const errEl = getOrCreateErrorEl(input);
+  if (isInvalid) {
+    input.classList.add("invalid");
+    errEl.textContent = message || MSG;
+    errEl.style.display = "block";
+  } else {
+    input.classList.remove("invalid");
+    errEl.textContent = "";
+    errEl.style.display = "none";
+  }
+}
+
 
       function isCardValid(v) {
   const digits = String(v || "").replace(/\D/g, "");
@@ -1000,15 +1009,22 @@
         const val = input.value;
 
         let ok = true;
-        if (id === "creditCardNumber") ok = isCardValid(val);
-        else if (id === "cvv") ok = isCvvValid(val);
-        else if (id === "expire") ok = isExpireValid(val);
-        else if (id === "ID") ok = isIsraeliIdValid(val);
-        else if (id === "phoneNumber") ok = isPhoneValid(val);
-        else if (id === "email") ok = isEmailValid(val, input);
+        let message = MSG;
 
-        setInvalid(input, !ok);
-        return ok;
+if (id === "creditCardNumber") ok = isCardValid(val);
+else if (id === "cvv") ok = isCvvValid(val);
+else if (id === "expire") ok = isExpireValid(val);
+else if (id === "ID") ok = isIsraeliIdValid(val);
+else if (id === "phoneNumber") ok = isPhoneValid(val);
+else if (id === "email") ok = isEmailValid(val, input);
+else if (id === "firstName" || id === "lastName") {
+  ok = isEnglishNameValid(val);
+  message = NAME_MSG;
+}
+
+setInvalid(input, !ok, message);
+return ok;
+
       }
 
       function validateAll() {
@@ -1032,7 +1048,7 @@
         const form = document.getElementById("nameForm");
         if (!form) return;
 
-        const ids = ["creditCardNumber", "cvv", "expire", "ID", "phoneNumber", "email"];
+const ids = ["creditCardNumber", "cvv", "expire", "ID", "phoneNumber", "email", "firstName", "lastName"];
         ids.forEach((fid) => {
           const el = document.getElementById(fid);
           if (!el) return;
