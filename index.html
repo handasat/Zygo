@@ -595,7 +595,7 @@
                 <div class="s1-ticket-name">כרטיס רגיל</div>
                 <div class="s1-prices">
                   <span class="s1-old" id="regularOld">399₪</span>
-                  <span class="s1-new" id="regularPrice" data-price="220">220.00₪</span>
+                  <span class="s1-new" id="regularPrice" data-price="220">220₪</span>
                 </div>
               </div>
             </div>
@@ -613,7 +613,7 @@
               <div class="s1-right">
                 <div class="s1-ticket-name">כרטיס VIP</div>
                 <div class="s1-prices">
-                  <span class="s1-new" id="vipPrice" data-price="320">320.00₪</span>
+                  <span class="s1-new" id="vipPrice" data-price="320">320₪</span>
                 </div>
               </div>
             </div>
@@ -785,7 +785,7 @@
       window.orderState = orderState;
 
       function readUnitPricesFromDOM() {
-        const regularPriceEl = document.getElementById("regularPrice");
+        const regularEl = document.getElementById("regularPrice");
         const vipPriceEl = document.getElementById("vipPrice");
         if (regularPriceEl) orderState.regularUnit = Number(regularPriceEl.dataset.price || 220);
         if (vipPriceEl) orderState.vipUnit = Number(vipPriceEl.dataset.price || 320);
